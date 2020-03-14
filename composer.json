@@ -10,5 +10,10 @@
             "email": "metameatmega@stuffonmylaptop.com"
         }
     ],
-    "require": {}
+    "require": {},
+    "autoload": {
+        "classmap": [
+            "src/"
+        ]
+    }
 }
