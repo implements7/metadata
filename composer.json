@@ -1,0 +1,14 @@
+{
+    "name": "metameatmega/metadata",
+    "type": "library",
+    "description": "Utilities for creating meta data for objects and code.",
+    "keywords": ["meta","tags"],
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Meta Meat Mega",
+            "email": "metameatmega@stuffonmylaptop.com"
+        }
+    ],
+    "require": {}
+}
