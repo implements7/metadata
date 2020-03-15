@@ -5,5 +5,6 @@ namespace MetaData;
 interface MetaDataInterface
 {
     public function addItem(MetaItemInterface $item): void;
+
     public function getPackage();
 }

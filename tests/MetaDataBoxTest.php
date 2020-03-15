@@ -4,6 +4,8 @@ use MetaData\MetaDataBox;
 use MetaData\MetaItemInterface;
 use MetaData\MetaPackerInterface;
 use MetaData\Packers\ArrayPacker;
+use MetaData\Values\StringArrayMetaValue;
+use MetaData\Values\StringMetaValue;
 use PHPUnit\Framework\TestCase;
 
 require_once dirname(__DIR__) . '/vendor/autoload.php';
@@ -39,7 +41,7 @@ class MetaDataBoxTest extends TestCase
 
         $item = $this->createMock(MetaItemInterface::class);
         $item->method('getName')->willReturn($name);
-        $string = new \MetaData\Values\StringMetaValue($value);
+        $string = new StringMetaValue($value);
         $item->method('getValue')->willReturn($string);
 
         $box->addItem($item);
@@ -47,5 +49,45 @@ class MetaDataBoxTest extends TestCase
         $this->assertIsArray($contents);
         $this->assertArrayHasKey($name, $contents);
         $this->assertEquals($value, $contents[$name]);
+    }
+
+    public function testGetPackageUsingArrayPackerAndStringArrayValue()
+    {
+        $values = ['a', 'b', 'c', 'd'];
+        $name = 'testName';
+
+        $packer = new ArrayPacker();
+        $box = new MetaDataBox($packer);
+
+        $item = $this->createMock(MetaItemInterface::class);
+        $item->method('getName')->willReturn($name);
+        $array = new StringArrayMetaValue($values);
+        $item->method('getValue')->willReturn($array);
+
+        $box->addItem($item);
+        $contents = $box->getPackage();
+        $this->assertIsArray($contents);
+        $this->assertArrayHasKey($name, $contents);
+        $this->assertEquals($values, $contents[$name]);
+    }
+
+    public function testGetPackageUsingArrayPackerAndStringArrayValueWithAssociativeArray()
+    {
+        $values = ['a' => 'A', 'b' => 'B', 'c' => 'C', 'd' => 'D'];
+        $name = 'testName';
+
+        $packer = new ArrayPacker();
+        $box = new MetaDataBox($packer);
+
+        $item = $this->createMock(MetaItemInterface::class);
+        $item->method('getName')->willReturn($name);
+        $array = new StringArrayMetaValue($values);
+        $item->method('getValue')->willReturn($array);
+
+        $box->addItem($item);
+        $contents = $box->getPackage();
+        $this->assertIsArray($contents);
+        $this->assertArrayHasKey($name, $contents);
+        $this->assertEquals($values, $contents[$name]);
     }
 }

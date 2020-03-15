@@ -19,8 +19,7 @@ class MetaDataBox implements MetaDataInterface
 
     public function getPackage()
     {
-        foreach ($this->items as $item)
-        {
+        foreach ($this->items as $item) {
             $this->packer->packItem($item);
         }
 

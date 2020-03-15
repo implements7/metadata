@@ -4,17 +4,10 @@ namespace MetaData\Values;
 
 use MetaData\MetaValueInterface;
 
-class StringMetaValue implements MetaValueInterface {
-
-    private string $value;
-
+class StringMetaValue extends ScalarMetaValue implements MetaValueInterface
+{
     public function __construct(string $value)
     {
-        $this->value = $value;
-    }
-
-    public function get()
-    {
-        return $this->value;
+        parent::__construct($value);
     }
 }
