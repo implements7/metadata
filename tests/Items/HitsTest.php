@@ -9,13 +9,6 @@ use PHPUnit\Framework\TestCase;
 
 class HitsTest extends TestCase
 {
-    public function testGetName()
-    {
-        $name = 'hits';
-        $hits = new Hits($name);
-        $this->assertEquals($name, $hits->getName());
-    }
-
     public function testGetValue()
     {
         $name = 'hits';

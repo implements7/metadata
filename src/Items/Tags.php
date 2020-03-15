@@ -2,23 +2,20 @@
 
 namespace MetaData\Items;
 
+use MetaData\Items\Traits\NameTrait;
 use MetaData\MetaItemInterface;
 use MetaData\MetaValueInterface;
 use MetaData\Values\ArrayMetaValue;
 
 class Tags implements MetaItemInterface
 {
-    private string $name = '';
+    use NameTrait;
+
     private array $tags = [];
 
     public function __construct(string $name)
     {
-        $this->name = $name;
-    }
-
-    public function getName(): string
-    {
-        return $this->name;
+        $this->setName($name);
     }
 
     public function getValue(): MetaValueInterface
