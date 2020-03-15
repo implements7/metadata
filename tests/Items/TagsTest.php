@@ -31,7 +31,7 @@ class TagsTest extends TestCase
 
         $expected = ['php', 'frameworks', 'testing'];
         foreach ($expected as $tag) {
-            $tags->append($tag);
+            $tags->add($tag);
         }
 
         $this->assertIsArray($tags->getValue()->get());
@@ -49,7 +49,7 @@ class TagsTest extends TestCase
 
         $expected = ['php', 'frameworks', 'testing', 'php', 'frameworks'];
         foreach ($expected as $tag) {
-            $tags->append($tag);
+            $tags->add($tag);
         }
 
         $this->assertIsArray($tags->getValue()->get());
@@ -67,7 +67,7 @@ class TagsTest extends TestCase
 
         $data = ['php', 'frameworks', 'testing', 'php', 'frameworks'];
         foreach ($data as $tag) {
-            $tags->append($tag);
+            $tags->add($tag);
         }
 
         $filter = new UniqueArray();

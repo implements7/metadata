@@ -14,6 +14,11 @@ class Tags implements MetaItemInterface, FilterAwareInterface
     use ArrayValueTrait;
     use FilterAwareTrait;
 
+    public function add(string $value): void
+    {
+        $this->values[] = $value;
+    }
+
     public function __construct(string $name)
     {
         $this->setName($name);

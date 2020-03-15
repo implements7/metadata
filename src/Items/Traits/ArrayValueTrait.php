@@ -9,11 +9,6 @@ trait ArrayValueTrait
 {
     protected array $values = [];
 
-    public function append(string $value): void
-    {
-        $this->values[] = $value;
-    }
-
     public function getValue(): MetaValueInterface
     {
         return new ArrayMetaValue($this->values);

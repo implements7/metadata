@@ -24,7 +24,7 @@ trait FilterAwareTrait
 
         $this->clear();
         foreach ($values->get() as $value) {
-            $this->append($value->get());
+            $this->add($value->get());
         }
     }
 }
