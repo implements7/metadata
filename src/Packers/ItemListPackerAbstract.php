@@ -26,7 +26,7 @@ abstract class ItemListPackerAbstract
             return $set;
         }
 
-        return $values;
+        return $this->recurse($values);
     }
 
     private function recurse($value) {
