@@ -71,6 +71,28 @@ class MetaDataBoxTest extends TestCase
         $this->assertEquals($values, $contents[$name]);
     }
 
+    public function testGetPackageUsingArrayPackerAndMultipleStringArrayValues()
+    {
+        $data = [
+            'one' => ['a', 'b', 'c', 'd'],
+            'two' => ['a', 'b', 'c', 'd']
+        ];
+
+        $packer = new ArrayPacker();
+        $box = new MetaDataBox($packer);
+
+        foreach ($data as $name => $values) {
+            $item = $this->createMock(MetaItemInterface::class);
+            $item->method('getName')->willReturn($name);
+            $array = new ArrayMetaValue($values);
+            $item->method('getValue')->willReturn($array);
+            $box->addItem($item);
+        }
+
+        $contents = $box->getPackage();
+        $this->assertEquals($data, $contents);
+    }
+
     public function testGetPackageUsingArrayPackerAndStringArrayValueWithAssociativeArray()
     {
         $values = ['a' => 'A', 'b' => 'B', 'c' => 'C', 'd' => 'D'];
