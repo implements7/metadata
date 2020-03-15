@@ -21,6 +21,21 @@ class MetaDataBoxTest extends TestCase
         $this->assertNull($box->addItem($item));
     }
 
+    public function testGetItemByName()
+    {
+        $packer = new ArrayPacker();
+        $box = new MetaDataBox($packer);
+
+        $name = 'testName';
+
+        $item = $this->createMock(MetaItemInterface::class);
+        $item->method('getName')->willReturn($name);
+
+        $box->addItem($item);
+        $this->assertNotSame($item, $box->getItemByName($name));
+        $this->assertEquals($item, $box->getItemByName($name));
+    }
+
     public function testGetPackage()
     {
         $packer = $this->createMock(MetaPackerInterface::class);

@@ -14,7 +14,16 @@ class MetaDataBox implements MetaDataInterface
 
     public function addItem(MetaItemInterface $item): void
     {
-        $this->items[] = $item;
+        $this->items[$item->getName()] = clone $item;
+    }
+
+    public function getItemByName(string $name): MetaItemInterface
+    {
+        if (isset($this->items[$name])) {
+            return $this->items[$name];
+        }
+
+        throw new \RuntimeException("Item not found");
     }
 
     public function getPackage()
