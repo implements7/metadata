@@ -2,33 +2,26 @@
 
 namespace MetaData\Items;
 
+use MetaData\Items\Traits\ArrayValueTrait;
 use MetaData\Items\Traits\NameTrait;
 use MetaData\MetaItemInterface;
-use MetaData\MetaValueInterface;
-use MetaData\Values\ArrayMetaValue;
 
 class Hits implements MetaItemInterface
 {
     use NameTrait;
-
-    private array $tags = [];
+    use ArrayValueTrait;
 
     public function __construct(string $name)
     {
         $this->setName($name);
     }
 
-    public function getValue(): MetaValueInterface
+    public function hit(string $hit): void
     {
-        return new ArrayMetaValue($this->tags);
-    }
-
-    public function hit(string $tag): void
-    {
-        if (!isset($this->tags[$tag])) {
-            $this->tags[$tag] = 0;
+        if (!isset($this->values[$hit])) {
+            $this->values[$hit] = 0;
         }
 
-        $this->tags[$tag]++;
+        $this->values[$hit]++;
     }
 }
