@@ -3,8 +3,6 @@
 namespace MetaData\Items;
 
 use MetaData\Filters\UniqueArray;
-use MetaData\MetaDataBox;
-use MetaData\Packers\ArrayPacker;
 use MetaData\Values\StringMetaValue;
 use PHPUnit\Framework\TestCase;
 
