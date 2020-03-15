@@ -29,7 +29,8 @@ abstract class ItemListPackerAbstract
         return $this->recurse($values);
     }
 
-    private function recurse($value) {
+    private function recurse($value)
+    {
         if ($value instanceof MetaValueInterface) {
             return $this->getAll($value);
         }

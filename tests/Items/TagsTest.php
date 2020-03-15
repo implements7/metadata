@@ -2,6 +2,7 @@
 
 namespace MetaData\Items;
 
+use MetaData\Filters\UniqueArray;
 use MetaData\MetaDataBox;
 use MetaData\Packers\ArrayPacker;
 use MetaData\Values\StringMetaValue;
@@ -23,14 +24,14 @@ class TagsTest extends TestCase
         $this->assertIsArray($tags->getValue()->get());
     }
 
-    public function testAdd()
+    public function testAppend()
     {
         $name = 'tags';
         $tags = new Tags($name);
 
         $expected = ['php', 'frameworks', 'testing'];
         foreach ($expected as $tag) {
-            $tags->add($tag);
+            $tags->append($tag);
         }
 
         $this->assertIsArray($tags->getValue()->get());
@@ -48,7 +49,7 @@ class TagsTest extends TestCase
 
         $expected = ['php', 'frameworks', 'testing', 'php', 'frameworks'];
         foreach ($expected as $tag) {
-            $tags->add($tag);
+            $tags->append($tag);
         }
 
         $this->assertIsArray($tags->getValue()->get());
@@ -56,6 +57,28 @@ class TagsTest extends TestCase
         foreach ($tags->getValue()->get() as $key => $tag) {
             $this->assertInstanceOf(StringMetaValue::class, $tag);
             $this->assertEquals($expected[$key], $tag->get());
+        }
+    }
+
+    public function testFilterDuplicateTags()
+    {
+        $name = 'tags';
+        $tags = new Tags($name);
+
+        $data = ['php', 'frameworks', 'testing', 'php', 'frameworks'];
+        foreach ($data as $tag) {
+            $tags->append($tag);
+        }
+
+        $filter = new UniqueArray();
+        $tags->addFilter($filter);
+        $tags->filterValues();
+
+        $this->assertIsArray($tags->getValue()->get());
+        $this->assertCount(count(array_unique($data)), $tags->getValue()->get());
+        foreach ($tags->getValue()->get() as $key => $tag) {
+            $this->assertInstanceOf(StringMetaValue::class, $tag);
+            $this->assertEquals($data[$key], $tag->get());
         }
     }
 }
