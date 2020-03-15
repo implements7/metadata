@@ -21,11 +21,19 @@ abstract class ItemListPackerAbstract
         if (is_iterable($values)) {
             $set = [];
             foreach ($values as $key => $value) {
-                $set[$key] = $value->get();
+                $set[$key] = $this->recurse($value);
             }
             return $set;
         }
 
         return $values;
+    }
+
+    private function recurse($value) {
+        if ($value instanceof MetaValueInterface) {
+            return $this->getAll($value);
+        }
+
+        return $value;
     }
 }

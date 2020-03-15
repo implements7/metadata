@@ -4,7 +4,7 @@ use MetaData\MetaDataBox;
 use MetaData\MetaItemInterface;
 use MetaData\MetaValueInterface;
 use MetaData\Packers\JsonPacker;
-use MetaData\Values\StringArrayMetaValue;
+use MetaData\Values\ArrayMetaValue;
 use MetaData\Values\StringMetaValue;
 
 require_once dirname(__DIR__) . '/vendor/autoload.php';
@@ -17,10 +17,11 @@ $userBio = new class implements MetaItemInterface {
 
     public function getValue(): MetaValueInterface
     {
-        return new StringArrayMetaValue([
+        return new ArrayMetaValue([
             'Name' => 'John',
-            'Age' => '37',
-            'Job' => 'Programmer'
+            'Age' => 37,
+            'Job' => 'Programmer',
+            'Tags' => ['PHP', 'Go']
         ]);
     }
 };

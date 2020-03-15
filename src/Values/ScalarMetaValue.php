@@ -6,7 +6,7 @@ use MetaData\MetaValueInterface;
 
 abstract class ScalarMetaValue implements MetaValueInterface
 {
-    protected string $value;
+    protected $value;
 
     public function __construct($value)
     {

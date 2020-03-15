@@ -4,7 +4,7 @@ use MetaData\MetaDataBox;
 use MetaData\MetaItemInterface;
 use MetaData\MetaPackerInterface;
 use MetaData\Packers\ArrayPacker;
-use MetaData\Values\StringArrayMetaValue;
+use MetaData\Values\ArrayMetaValue;
 use MetaData\Values\StringMetaValue;
 use PHPUnit\Framework\TestCase;
 
@@ -61,7 +61,7 @@ class MetaDataBoxTest extends TestCase
 
         $item = $this->createMock(MetaItemInterface::class);
         $item->method('getName')->willReturn($name);
-        $array = new StringArrayMetaValue($values);
+        $array = new ArrayMetaValue($values);
         $item->method('getValue')->willReturn($array);
 
         $box->addItem($item);
@@ -81,7 +81,7 @@ class MetaDataBoxTest extends TestCase
 
         $item = $this->createMock(MetaItemInterface::class);
         $item->method('getName')->willReturn($name);
-        $array = new StringArrayMetaValue($values);
+        $array = new ArrayMetaValue($values);
         $item->method('getValue')->willReturn($array);
 
         $box->addItem($item);
