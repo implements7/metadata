@@ -11,7 +11,7 @@ abstract class ScalarMetaValue implements MetaValueInterface
     public function __construct($value)
     {
         if (!is_scalar($value)) {
-            throw new \MetaValueTypeException('Value must be a scalar');
+            throw new MetaValueTypeException('Value must be a scalar');
         }
 
         $this->value = $value;

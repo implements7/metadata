@@ -16,6 +16,10 @@ $tags->add('Saturn');
 $tags->add('Uranus');
 $tags->add('Neptune');
 
+// Duplicate values are possible.
+$tags->add('Earth');
+$tags->add('Mars');
+
 $jsonPacker = new JsonPacker();
 $box = new MetaDataBox($jsonPacker);
 $box->addItem($tags);

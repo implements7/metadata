@@ -40,4 +40,22 @@ class TagsTest extends TestCase
             $this->assertEquals($expected[$key], $tag->get());
         }
     }
+
+    public function testDuplicateTags()
+    {
+        $name = 'tags';
+        $tags = new Tags($name);
+
+        $expected = ['php', 'frameworks', 'testing', 'php', 'frameworks'];
+        foreach ($expected as $tag) {
+            $tags->add($tag);
+        }
+
+        $this->assertIsArray($tags->getValue()->get());
+        $this->assertCount(count($expected), $tags->getValue()->get());
+        foreach ($tags->getValue()->get() as $key => $tag) {
+            $this->assertInstanceOf(StringMetaValue::class, $tag);
+            $this->assertEquals($expected[$key], $tag->get());
+        }
+    }
 }
