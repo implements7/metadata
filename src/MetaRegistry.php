@@ -7,39 +7,26 @@ use RuntimeException;
 class MetaRegistry
 {
     private array $registers = [];
-    private array $data = [];
 
-    public function register($variable, MetaDataInterface $data): void
+    public function register(MetaTrackableInterface $trackable, MetaDataInterface $data): void
     {
-        $address = $this->findOrRegister($variable);
-        $this->data[$address] = clone $data;
+        $address = $this->getAddress($trackable);
+        $this->registers[$address] = clone $data;
     }
 
-    private function findOrRegister($variable): int
+    private function getAddress(MetaTrackableInterface $trackable): string
     {
-        $key = $this->find($variable);
+        return spl_object_hash($trackable);
+    }
 
-        if ($key === false) {
-            $key = count($this->registers);
-            $this->registers[$key] = $variable;
+    public function get($trackable): MetaDataInterface
+    {
+        $address = $this->getAddress($trackable);
+
+        if (!isset($this->registers[$address])) {
+            throw new RuntimeException('Object not registered');
         }
 
-        return $key;
-    }
-
-    private function find($variable)
-    {
-        return array_search($variable, $this->registers);
-    }
-
-    public function get($variable): MetaDataInterface
-    {
-        $key = $this->find($variable);
-
-        if ($key === false) {
-            throw new RuntimeException('Variable not registered');
-        }
-
-        return $this->data[$key];
+        return $this->registers[$address];
     }
 }
