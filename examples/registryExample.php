@@ -7,7 +7,12 @@ use MetaData\Packers\JsonPacker;
 
 require_once dirname(__DIR__) . '/vendor/autoload.php';
 
-$myVar = 'some string';
+class MyClass implements \MetaData\MetaTrackableInterface {
+    public string $value = '';
+}
+
+$myVar = new MyClass();
+$myVar->value = 'test';
 
 $jsonPacker = new JsonPacker();
 $box = new MetaDataBox($jsonPacker);
@@ -20,22 +25,17 @@ $meta->get($myVar)->addItem($hits);
 $meta->get($myVar)->getItemByName('counters')->hit('called');
 $meta->get($myVar)->getItemByName('counters')->hit('called');
 
+// Modifying original object does not affect meta association.
+$myVar->value = 'testModified';
 var_dump(['$myVar' => $meta->get($myVar)->getPackage()]);
 
-// Each registration is a copy, so continue to attach original box for new registrations.
-$myArray = ['register', 'supports', 'any', 'type'];
-$meta->register($myArray, $box);
-$meta->get($myArray)->addItem($hits);
-$meta->get($myArray)->getItemByName('counters')->hit('called');
+// Re-registering an object will overwrite meta association.
+$meta->register($myVar, $box);
+var_dump(['$myVar' => $meta->get($myVar)->getPackage()]);
 
-var_dump(['$myArray' => $meta->get($myArray)->getPackage()]);
-
-// Call hits on original variable.
-$meta->get($myVar)->getItemByName('counters')->hit('called');
-$meta->get($myVar)->getItemByName('counters')->hit('called');
-
-// Hits only affect original.
-var_dump([
-    '$myVar' => $meta->get($myVar)->getPackage(),
-    '$myArray' => $meta->get($myArray)->getPackage()
-]);
+// Since boxes are cloned on registration, direct box access will not yield registry values:
+try {
+    $box->getItemByName('counters')->hit('called');
+} catch (RuntimeException $e) {
+    var_dump($e->getMessage());
+}

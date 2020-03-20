@@ -6,6 +6,8 @@ use MetaData\Packers\JsonPacker;
 
 require_once dirname(__DIR__) . '/vendor/autoload.php';
 
+echo 'Running example...', "\n";
+
 $hits = new Hits('counters');
 
 $years = 3;
