@@ -1,9 +1,7 @@
-<?php
+<?php declare(strict_types=1);
 
 namespace MetaData\Items;
 
-use MetaData\MetaDataBox;
-use MetaData\Packers\ArrayPacker;
 use MetaData\Values\IntegerMetaValue;
 use PHPUnit\Framework\TestCase;
 

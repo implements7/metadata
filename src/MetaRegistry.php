@@ -2,17 +2,18 @@
 
 namespace MetaData;
 
+use ArrayAccess;
 use MetaData\Common\ArrayAccessTrait;
 use RuntimeException;
 
-class MetaRegistry implements \ArrayAccess
+class MetaRegistry implements ArrayAccess
 {
     use ArrayAccessTrait;
 
     private array $registers = [];
     private array $addressNames = [];
 
-    public function register(MetaTrackableInterface $trackable, MetaDataInterface $data, ?string $name = ''): void
+    public function register(MetaTrackableInterface $trackable, MetaDataBox $data, ?string $name = ''): void
     {
         $address = $this->getAddress($trackable);
         $this->registers[$address] = $data;
@@ -23,24 +24,29 @@ class MetaRegistry implements \ArrayAccess
         }
     }
 
-    public function getByName(string $name): MetaDataInterface
+    public function getByName(string $name): MetaDataBox
     {
         if (!$this->offsetExists($name))
         {
-            throw new \RuntimeException("Name not registered");
+            throw new RuntimeException("Name not registered");
         }
 
         return $this[$name];
     }
 
-    public function get(MetaTrackableInterface $trackable): MetaDataInterface
+    public function get(MetaTrackableInterface $trackable): MetaDataBox
     {
         $address = $this->getAddress($trackable);
 
         return $this->getByAddress($address);
     }
 
-    private function getByAddress(string $address): MetaDataInterface
+    public function __get(string $name): MetaDataBox
+    {
+        return $this->getByName($name);
+    }
+
+    private function getByAddress(string $address): MetaDataBox
     {
         if (!isset($this->registers[$address])) {
             throw new RuntimeException('Object not registered');

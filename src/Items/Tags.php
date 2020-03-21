@@ -23,4 +23,9 @@ class Tags implements MetaItemInterface, FilterAwareInterface
     {
         $this->setName($name);
     }
+
+    public function __invoke(string ...$parameters): void
+    {
+        $this->add($parameters[0] ?? '');
+    }
 }

@@ -32,8 +32,79 @@ class MetaDataBoxTest extends TestCase
         $item->method('getName')->willReturn($name);
 
         $box->addItem($item);
-        $this->assertNotSame($item, $box->getItemByName($name));
-        $this->assertEquals($item, $box->getItemByName($name));
+        $this->assertSame($item, $box->getItemByName($name));
+    }
+
+    public function testGetMissingItemByName()
+    {
+        $packer = new ArrayPacker();
+        $box = new MetaDataBox($packer);
+
+        $name = 'testName';
+
+        $this->expectException(RuntimeException::class);
+        $box->getItemByName($name);
+    }
+
+    public function testGetItemByArrayAccess()
+    {
+        $packer = new ArrayPacker();
+        $box = new MetaDataBox($packer);
+
+        $name = 'testName';
+
+        $item = $this->createMock(MetaItemInterface::class);
+        $item->method('getName')->willReturn($name);
+
+        $box->addItem($item);
+        $this->assertSame($item, $box[$name]);
+        $this->assertSame($box->getItemByName($name), $box[$name]);
+    }
+
+    public function testGetItemByObjectAccess()
+    {
+        $packer = new ArrayPacker();
+        $box = new MetaDataBox($packer);
+
+        $name = 'testName';
+
+        $item = $this->createMock(MetaItemInterface::class);
+        $item->method('getName')->willReturn($name);
+
+        $box->addItem($item);
+        $this->assertSame($item, $box->$name);
+        $this->assertSame($box->getItemByName($name), $box->$name);
+    }
+
+    public function testInvokeForMissingItem()
+    {
+        $packer = new ArrayPacker();
+        $box = new MetaDataBox($packer);
+
+        $this->expectException(RuntimeException::class);
+        $box->doThings();
+    }
+
+    public function testInvokeForItem()
+    {
+        $packer = new ArrayPacker();
+        $box = new MetaDataBox($packer);
+
+        $name = 'testName';
+        $item = $this->createMock(MetaItemInterface::class);
+        $item->method('getName')->willReturn($name);
+        $box->addItem($item);
+
+        $this->assertNull($box->$name());
+    }
+
+    public function testGetMissingItemByArrayAccess()
+    {
+        $packer = new ArrayPacker();
+        $box = new MetaDataBox($packer);
+
+        $name = 'testName';
+        $this->assertArrayNotHasKey($name, $box);
     }
 
     public function testGetPackage()

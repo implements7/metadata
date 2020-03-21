@@ -105,4 +105,29 @@ class MetaRegistryTest extends TestCase
 
         $this->assertArrayNotHasKey('testName', $registry);
     }
+
+    public function testObjectAccess()
+    {
+        $registry = new MetaRegistry();
+
+        $trackable = $this->createMock(MetaTrackableInterface::class);
+        $packer = $this->createMock(MetaPackerInterface::class);
+        $box = new MetaDataBox($packer);
+
+        $name = 'testName';
+
+        $this->assertNull($registry->register($trackable, $box, $name));
+        $this->assertSame($registry->get($trackable), $registry->$name);
+    }
+
+    public function testObjectAccessUnregisteredName()
+    {
+        $registry = new MetaRegistry();
+
+        $name = 'testName';
+
+
+        $this->expectException(RuntimeException::class);
+        $registry->$name;
+    }
 }

@@ -24,4 +24,9 @@ class Hits implements MetaItemInterface
 
         $this->values[$hit]++;
     }
+
+    public function __invoke(string ...$parameters): void
+    {
+        $this->hit($parameters[0] ?? '');
+    }
 }
