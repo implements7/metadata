@@ -15,7 +15,7 @@ class MetaRegistry implements \ArrayAccess
     public function register(MetaTrackableInterface $trackable, MetaDataInterface $data, ?string $name = ''): void
     {
         $address = $this->getAddress($trackable);
-        $this->registers[$address] = clone $data;
+        $this->registers[$address] = $data;
 
         if (isset($name))
         {

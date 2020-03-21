@@ -14,28 +14,25 @@ class MyClass implements \MetaData\MetaTrackableInterface {
 $myVar = new MyClass();
 $myVar->value = 'test';
 
-$jsonPacker = new JsonPacker();
-$box = new MetaDataBox($jsonPacker);
-
 $meta = new MetaRegistry();
-$meta->register($myVar, $box);
 
+$box = new MetaDataBox(new JsonPacker());
 $hits = new Hits('counters');
-$meta->get($myVar)->addItem($hits);
-$meta->get($myVar)->getItemByName('counters')->hit('called');
+$box->addItem($hits);
+
+$meta->register($myVar, $box);
 $meta->get($myVar)->getItemByName('counters')->hit('called');
 
 // Modifying original object does not affect meta association.
 $myVar->value = 'testModified';
 var_dump(['$myVar' => $meta->get($myVar)->getPackage()]);
 
-// Re-registering an object will overwrite meta association.
-$meta->register($myVar, $box);
-var_dump(['$myVar' => $meta->get($myVar)->getPackage()]);
+// Objects can be registered and accessed by name.
+$name = 'TrackMe';
+$meta->register($myVar, $box, $name);
+$meta->getByName($name)->getItemByName('counters')->hit('called');
+var_dump(['named registration' => $meta->getByName($name)->getPackage()]);
 
-// Since boxes are cloned on registration, direct box access will not yield registry values:
-try {
-    $box->getItemByName('counters')->hit('called');
-} catch (RuntimeException $e) {
-    var_dump($e->getMessage());
-}
+// For convenience, objects registered by name can use ArrayAccess via registry.
+$meta[$name]->getItemByName('counters')->hit('called');
+var_dump(['named registration (ArrayAccess)' => $meta[$name]->getPackage()]);

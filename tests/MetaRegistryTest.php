@@ -27,7 +27,7 @@ class MetaRegistryTest extends TestCase
         $box = new MetaDataBox($packer);
 
         $registry->register($trackable, $box);
-        $this->assertNotSame($box, $registry->get($trackable));
+        $this->assertSame($box, $registry->get($trackable));
         $this->assertEquals($box, $registry->get($trackable));
         $this->assertSame($registry->get($trackable), $registry->get($trackable));
     }
@@ -44,17 +44,13 @@ class MetaRegistryTest extends TestCase
         $box = new MetaDataBox($packer);
 
         $registry->register($trackable, $box);
-        $this->assertNotSame($box, $registry->get($trackable));
+        $this->assertSame($box, $registry->get($trackable));
         $this->assertEquals($box, $registry->get($trackable));
         $this->assertSame($registry->get($trackable), $registry->get($trackable));
 
         // Modify object, meta is preserved.
         $trackable->data['key'] = 'value';
         $this->assertSame($registry->get($trackable), $registry->get($trackable));
-
-        // Re-register object to clear meta association.
-        $registry->register($trackable, $box);
-        $this->assertNotSame($box, $registry->get($trackable));
     }
 
     public function testRegisterWithName()
@@ -79,18 +75,16 @@ class MetaRegistryTest extends TestCase
         $name = "testName";
 
         $this->assertNull($registry->register($trackable, $box, $name));
-        $this->assertNotSame($box, $registry->getByName($name));
+        $this->assertSame($box, $registry->getByName($name));
         $this->assertSame($registry->get($trackable), $registry->getByName($name));
     }
 
     public function testGetByUnregisteredName()
     {
         $registry = new MetaRegistry();
-        $packer = $this->createMock(MetaPackerInterface::class);
-        $box = new MetaDataBox($packer);
 
         $this->expectException(RuntimeException::class);
-        $this->assertNotSame($box, $registry->getByName('unregisteredName'));
+        $registry->getByName('unregisteredName');
     }
 
     public function testArrayAccess()
@@ -102,7 +96,6 @@ class MetaRegistryTest extends TestCase
         $box = new MetaDataBox($packer);
 
         $this->assertNull($registry->register($trackable, $box, 'testName'));
-
         $this->assertSame($registry->get($trackable), $registry['testName']);
     }
 
