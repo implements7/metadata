@@ -3,6 +3,7 @@
 namespace MetaData;
 
 use PHPUnit\Framework\TestCase;
+use RuntimeException;
 
 class MetaRegistryTest extends TestCase
 {
@@ -54,5 +55,61 @@ class MetaRegistryTest extends TestCase
         // Re-register object to clear meta association.
         $registry->register($trackable, $box);
         $this->assertNotSame($box, $registry->get($trackable));
+    }
+
+    public function testRegisterWithName()
+    {
+        $registry = new MetaRegistry();
+
+        $trackable = $this->createMock(MetaTrackableInterface::class);
+        $packer = $this->createMock(MetaPackerInterface::class);
+        $box = new MetaDataBox($packer);
+
+        $this->assertNull($registry->register($trackable, $box, "testName"));
+    }
+
+    public function testGetByName()
+    {
+        $registry = new MetaRegistry();
+
+        $trackable = $this->createMock(MetaTrackableInterface::class);
+        $packer = $this->createMock(MetaPackerInterface::class);
+        $box = new MetaDataBox($packer);
+
+        $name = "testName";
+
+        $this->assertNull($registry->register($trackable, $box, $name));
+        $this->assertNotSame($box, $registry->getByName($name));
+        $this->assertSame($registry->get($trackable), $registry->getByName($name));
+    }
+
+    public function testGetByUnregisteredName()
+    {
+        $registry = new MetaRegistry();
+        $packer = $this->createMock(MetaPackerInterface::class);
+        $box = new MetaDataBox($packer);
+
+        $this->expectException(RuntimeException::class);
+        $this->assertNotSame($box, $registry->getByName('unregisteredName'));
+    }
+
+    public function testArrayAccess()
+    {
+        $registry = new MetaRegistry();
+
+        $trackable = $this->createMock(MetaTrackableInterface::class);
+        $packer = $this->createMock(MetaPackerInterface::class);
+        $box = new MetaDataBox($packer);
+
+        $this->assertNull($registry->register($trackable, $box, 'testName'));
+
+        $this->assertSame($registry->get($trackable), $registry['testName']);
+    }
+
+    public function testArrayAccessUnregisteredName()
+    {
+        $registry = new MetaRegistry();
+
+        $this->assertArrayNotHasKey('testName', $registry);
     }
 }
