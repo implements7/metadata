@@ -7,7 +7,7 @@ use MetaData\Packers\JsonPacker;
 use MetaData\Values\ArrayMetaValue;
 use MetaData\Values\StringMetaValue;
 
-require_once dirname(__DIR__) . '/vendor/autoload.php';
+require_once 'vendor/autoload.php';
 
 // A class that defines the data to be stored.
 $userBio = new class implements MetaItemInterface {

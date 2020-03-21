@@ -5,7 +5,7 @@ use MetaData\MetaDataBox;
 use MetaData\MetaRegistry;
 use MetaData\Packers\JsonPacker;
 
-require_once dirname(__DIR__) . '/vendor/autoload.php';
+require_once 'vendor/autoload.php';
 
 class MyClass implements \MetaData\MetaTrackableInterface {
     public string $value = '';

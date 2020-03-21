@@ -5,7 +5,7 @@ use MetaData\Items\Tags;
 use MetaData\MetaDataBox;
 use MetaData\Packers\JsonPacker;
 
-require_once dirname(__DIR__) . '/vendor/autoload.php';
+require_once 'vendor/autoload.php';
 
 $tags = new Tags('Planets');
 $tags->add('Mercury');

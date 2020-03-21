@@ -4,7 +4,7 @@ use MetaData\Items\Hits;
 use MetaData\MetaDataBox;
 use MetaData\Packers\JsonPacker;
 
-require_once dirname(__DIR__) . '/vendor/autoload.php';
+require_once 'vendor/autoload.php';
 
 echo 'Running example...', "\n";
 
