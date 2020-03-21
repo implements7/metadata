@@ -6,7 +6,7 @@ use ArrayAccess;
 use MetaData\Common\ArrayAccessTrait;
 use RuntimeException;
 
-class MetaDataBox implements MetaDataInterface, ArrayAccess
+class MetaDataBox implements MetaDataInterface, MetaDataMagicalInterface, ArrayAccess
 {
     use ArrayAccessTrait;
 

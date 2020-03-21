@@ -8,12 +8,9 @@ use MetaData\Packers\JsonPacker;
 
 require_once 'vendor/autoload.php';
 
-class MyClass implements MetaTrackableInterface {
-    public string $value = '';
-}
-
-$myVar = new MyClass();
-$myVar->value = 'test';
+$myVar = new class implements MetaTrackableInterface {
+    public string $value = 'test';
+};
 
 $meta = new MetaRegistry();
 
@@ -26,10 +23,12 @@ $meta->get($myVar)->getItemByName('counters')->hit('called');
 
 // Modifying original object does not affect meta association.
 $myVar->value = 'testModified';
+
 var_dump(['$myVar' => $meta->get($myVar)->getPackage()]);
 
 // Objects can be registered and accessed by name.
 $name = 'TrackMe';
 $meta->register($myVar, $box, $name);
 $meta->getByName($name)->getItemByName('counters')->hit('called');
+
 var_dump(['named registration' => $meta->getByName($name)->getPackage()]);

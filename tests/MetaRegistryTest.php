@@ -18,6 +18,18 @@ class MetaRegistryTest extends TestCase
         $this->assertNull($registry->register($trackable, $box));
     }
 
+    public function testRegisterMetaDataInterface()
+    {
+        $registry = new MetaRegistry();
+
+        $trackable = $this->createMock(MetaTrackableInterface::class);
+        $box = $this->createMock(MetaDataInterface::class);
+
+        $this->assertNull($registry->register($trackable, $box));
+
+        $this->assertSame($box, $registry->get($trackable));
+    }
+
     public function testGet()
     {
         $registry = new MetaRegistry();
@@ -125,7 +137,6 @@ class MetaRegistryTest extends TestCase
         $registry = new MetaRegistry();
 
         $name = 'testName';
-
 
         $this->expectException(RuntimeException::class);
         $registry->$name;

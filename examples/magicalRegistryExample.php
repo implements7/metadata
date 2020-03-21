@@ -8,12 +8,9 @@ use MetaData\Packers\JsonPacker;
 
 require_once 'vendor/autoload.php';
 
-class MyClass implements MetaTrackableInterface {
-    public string $value = '';
-}
-
-$myVar = new MyClass();
-$myVar->value = 'test';
+$myVar = new class implements MetaTrackableInterface {
+    public string $value = 'test';
+};
 
 $meta = new MetaRegistry();
 
@@ -26,11 +23,13 @@ $meta->register($myVar, $box, $name);
 
 // For convenience, objects registered by name can use ArrayAccess via registry.
 $meta[$name]->getItemByName('counters')->hit('called');
+
 var_dump(['named registration (ArrayAccess)' => $meta[$name]->getPackage()]);
 
 // The box also supports array access, so we can do this.
 $meta[$name]['counters']->hit('called');
 $meta[$name]['counters']->hit('called');
+
 var_dump(['counters (ArrayAccess)' => $meta[$name]->getPackage()]);
 
 // If the added items support ActionItemInterface, then we can call them as functions.
