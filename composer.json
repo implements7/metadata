@@ -1,5 +1,5 @@
 {
-    "name": "metameatmega/metadata",
+    "name": "implements7/metadata",
     "type": "library",
     "description": "Utilities for creating meta data for objects and code.",
     "keywords": ["meta","tags"],
@@ -10,7 +10,9 @@
             "homepage": "http://johnsquibb.com"
         }
     ],
-    "require": {},
+    "require": {
+        "php": "^7.4"
+    },
     "autoload": {
         "psr-4": {
             "MetaData\\": "src/"

@@ -1,14 +1,20 @@
-<?php declare(strict_types=1);
+# MetaData
 
-use MetaData\MetaDataBox;
-use MetaData\MetaItemInterface;
-use MetaData\MetaValueInterface;
-use MetaData\Packers\JsonPacker;
-use MetaData\Values\ArrayMetaValue;
-use MetaData\Values\StringMetaValue;
+MetaData is a collection of utilities for organizing information about objects.
 
-require_once dirname(__DIR__) . '/vendor/autoload.php';
+## Installation
 
+Install using [composer](https://getcomposer.org/):
+
+```bash
+$ composer require implements7/metadata
+```
+
+## Usage
+
+Basic Usage:
+
+```php
 // A class that defines the data to be stored.
 $userBio = new class implements MetaItemInterface {
     public function getName(): string
@@ -34,23 +40,13 @@ $jsonPacker = new JsonPacker();
 $box = new MetaDataBox($jsonPacker);
 $box->addItem($userBio);
 
-// Another class to track additional data.
-$location = new class implements MetaItemInterface {
-    public function getName(): string
-    {
-        return 'Location';
-    }
-
-    public function getValue(): MetaValueInterface
-    {
-        return new StringMetaValue('Las Vegas');
-    }
-};
-
-$box->addItem($location);
-
 // Get the data.
 $contents = $box->getPackage();
 
 echo $contents;
+```
+
+
+
+See the examples directory for more use cases.
 
