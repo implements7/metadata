@@ -13,7 +13,7 @@ class MetaRegistry implements ArrayAccess
     private array $registers = [];
     private array $addressNames = [];
 
-    public function register(MetaTrackableInterface $trackable, MetaDataBox $data, ?string $name = ''): void
+    public function register(MetaTrackableInterface $trackable, MetaDataInterface $data, ?string $name = ''): void
     {
         $address = $this->getAddress($trackable);
         $this->registers[$address] = $data;
@@ -24,7 +24,7 @@ class MetaRegistry implements ArrayAccess
         }
     }
 
-    public function getByName(string $name): MetaDataBox
+    public function getByName(string $name): MetaDataInterface
     {
         if (!$this->offsetExists($name))
         {
@@ -34,19 +34,19 @@ class MetaRegistry implements ArrayAccess
         return $this[$name];
     }
 
-    public function get(MetaTrackableInterface $trackable): MetaDataBox
+    public function get(MetaTrackableInterface $trackable): MetaDataInterface
     {
         $address = $this->getAddress($trackable);
 
         return $this->getByAddress($address);
     }
 
-    public function __get(string $name): MetaDataBox
+    public function __get(string $name): MetaDataInterface
     {
         return $this->getByName($name);
     }
 
-    private function getByAddress(string $address): MetaDataBox
+    private function getByAddress(string $address): MetaDataInterface
     {
         if (!isset($this->registers[$address])) {
             throw new RuntimeException('Object not registered');
