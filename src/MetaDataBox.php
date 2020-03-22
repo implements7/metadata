@@ -13,11 +13,6 @@ class MetaDataBox implements MetaDataInterface, MetaDataMagicalInterface, ArrayA
     private array $items = [];
     private MetaPackerInterface $packer;
 
-    public function __construct(MetaPackerInterface $packer)
-    {
-        $this->packer = $packer;
-    }
-
     public function addItem(MetaItemInterface $item): void
     {
         $this->items[$item->getName()] = $item;
@@ -26,13 +21,13 @@ class MetaDataBox implements MetaDataInterface, MetaDataMagicalInterface, ArrayA
         $this->setOffsets($this->items);
     }
 
-    public function getPackage()
+    public function getPackage(MetaPackerInterface $packer)
     {
         foreach ($this->items as $item) {
-            $this->packer->packItem($item);
+            $packer->packItem($item);
         }
 
-        return $this->packer->getContents();
+        return $packer->getContents();
     }
 
     public function __get(string $name): MetaDataBoxItemInterface

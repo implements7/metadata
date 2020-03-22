@@ -14,8 +14,7 @@ class MetaDataBoxTest extends TestCase
 {
     public function testAddItem()
     {
-        $packer = $this->createMock(MetaPackerInterface::class);
-        $box = new MetaDataBox($packer);
+        $box = new MetaDataBox();
 
         $item = $this->createMock(MetaDataBoxItemInterface::class);
         $this->assertNull($box->addItem($item));
@@ -23,8 +22,7 @@ class MetaDataBoxTest extends TestCase
 
     public function testGetItemByName()
     {
-        $packer = new ArrayPacker();
-        $box = new MetaDataBox($packer);
+        $box = new MetaDataBox();
 
         $name = 'testName';
 
@@ -37,8 +35,7 @@ class MetaDataBoxTest extends TestCase
 
     public function testGetMissingItemByName()
     {
-        $packer = new ArrayPacker();
-        $box = new MetaDataBox($packer);
+        $box = new MetaDataBox();
 
         $name = 'testName';
 
@@ -48,8 +45,7 @@ class MetaDataBoxTest extends TestCase
 
     public function testGetItemByArrayAccess()
     {
-        $packer = new ArrayPacker();
-        $box = new MetaDataBox($packer);
+        $box = new MetaDataBox();
 
         $name = 'testName';
 
@@ -63,8 +59,7 @@ class MetaDataBoxTest extends TestCase
 
     public function testGetItemByObjectAccess()
     {
-        $packer = new ArrayPacker();
-        $box = new MetaDataBox($packer);
+        $box = new MetaDataBox();
 
         $name = 'testName';
 
@@ -78,8 +73,7 @@ class MetaDataBoxTest extends TestCase
 
     public function testInvokeForMissingItem()
     {
-        $packer = new ArrayPacker();
-        $box = new MetaDataBox($packer);
+        $box = new MetaDataBox();
 
         $this->expectException(RuntimeException::class);
         $box->doThings();
@@ -87,8 +81,7 @@ class MetaDataBoxTest extends TestCase
 
     public function testInvokeForItem()
     {
-        $packer = new ArrayPacker();
-        $box = new MetaDataBox($packer);
+        $box = new MetaDataBox();
 
         $name = 'testName';
         $item = $this->createMock(MetaDataBoxItemInterface::class);
@@ -109,21 +102,21 @@ class MetaDataBoxTest extends TestCase
 
     public function testGetPackage()
     {
+        $box = new MetaDataBox();
+
         $packer = $this->createMock(MetaPackerInterface::class);
         $packer->method('getContents')->willReturn([]);
 
-        $box = new MetaDataBox($packer);
 
-        $this->assertIsArray($box->getPackage());
+        $this->assertIsArray($box->getPackage($packer));
     }
 
     public function testGetPackageUsingArrayPackerAndStringValue()
     {
+        $box = new MetaDataBox();
+
         $value = 'testString';
         $name = 'testName';
-
-        $packer = new ArrayPacker();
-        $box = new MetaDataBox($packer);
 
         $item = $this->createMock(MetaDataBoxItemInterface::class);
         $item->method('getName')->willReturn($name);
@@ -131,7 +124,10 @@ class MetaDataBoxTest extends TestCase
         $item->method('getValue')->willReturn($string);
 
         $box->addItem($item);
-        $contents = $box->getPackage();
+
+        $packer = new ArrayPacker();
+        $contents = $box->getPackage($packer);
+
         $this->assertIsArray($contents);
         $this->assertArrayHasKey($name, $contents);
         $this->assertEquals($value, $contents[$name]);
@@ -139,11 +135,10 @@ class MetaDataBoxTest extends TestCase
 
     public function testGetPackageUsingArrayPackerAndStringArrayValue()
     {
+        $box = new MetaDataBox();
+
         $values = ['a', 'b', 'c', 'd'];
         $name = 'testName';
-
-        $packer = new ArrayPacker();
-        $box = new MetaDataBox($packer);
 
         $item = $this->createMock(MetaDataBoxItemInterface::class);
         $item->method('getName')->willReturn($name);
@@ -151,7 +146,10 @@ class MetaDataBoxTest extends TestCase
         $item->method('getValue')->willReturn($array);
 
         $box->addItem($item);
-        $contents = $box->getPackage();
+
+        $packer = new ArrayPacker();
+        $contents = $box->getPackage($packer);
+
         $this->assertIsArray($contents);
         $this->assertArrayHasKey($name, $contents);
         $this->assertEquals($values, $contents[$name]);
@@ -159,13 +157,12 @@ class MetaDataBoxTest extends TestCase
 
     public function testGetPackageUsingArrayPackerAndMultipleStringArrayValues()
     {
+        $box = new MetaDataBox();
+
         $data = [
             'one' => ['a', 'b', 'c', 'd'],
             'two' => ['a', 'b', 'c', 'd']
         ];
-
-        $packer = new ArrayPacker();
-        $box = new MetaDataBox($packer);
 
         foreach ($data as $name => $values) {
             $item = $this->createMock(MetaDataBoxItemInterface::class);
@@ -175,17 +172,17 @@ class MetaDataBoxTest extends TestCase
             $box->addItem($item);
         }
 
-        $contents = $box->getPackage();
+        $packer = new ArrayPacker();
+        $contents = $box->getPackage($packer);
         $this->assertEquals($data, $contents);
     }
 
     public function testGetPackageUsingArrayPackerAndStringArrayValueWithAssociativeArray()
     {
+        $box = new MetaDataBox();
+
         $values = ['a' => 'A', 'b' => 'B', 'c' => 'C', 'd' => 'D'];
         $name = 'testName';
-
-        $packer = new ArrayPacker();
-        $box = new MetaDataBox($packer);
 
         $item = $this->createMock(MetaDataBoxItemInterface::class);
         $item->method('getName')->willReturn($name);
@@ -193,7 +190,10 @@ class MetaDataBoxTest extends TestCase
         $item->method('getValue')->willReturn($array);
 
         $box->addItem($item);
-        $contents = $box->getPackage();
+
+        $packer = new ArrayPacker();
+        $contents = $box->getPackage($packer);
+
         $this->assertIsArray($contents);
         $this->assertArrayHasKey($name, $contents);
         $this->assertEquals($values, $contents[$name]);

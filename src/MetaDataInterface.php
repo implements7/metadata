@@ -8,5 +8,5 @@ interface MetaDataInterface
 
     public function getItemByName(string $name): MetaItemInterface;
 
-    public function getPackage();
+    public function getPackage(MetaPackerInterface $packer);
 }
