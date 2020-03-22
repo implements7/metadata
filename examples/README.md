@@ -22,6 +22,7 @@ A collection of tags can be built using the provided Tags item class.
 use MetaData\Filters\UniqueArray;
 use MetaData\Items\Tags;
 use MetaData\MetaDataBox;
+use MetaData\Packers\ArrayPacker;
 use MetaData\Packers\JsonPacker;
 
 require_once 'vendor/autoload.php';
@@ -46,10 +47,12 @@ $tags->addFilter($filter);
 $tags->filterValues();
 
 $jsonPacker = new JsonPacker();
-$box = new MetaDataBox($jsonPacker);
+$box = new MetaDataBox();
 $box->addItem($tags);
 
-echo $box->getPackage();
+var_dump(
+    $box->getPackage(new ArrayPacker())
+);
 ```
 
 ## Hits Example
@@ -91,11 +94,10 @@ for ($y = 0; $y < $years; $y++) {
     }
 }
 
-$jsonPacker = new JsonPacker();
-$box = new MetaDataBox($jsonPacker);
-
+$box = new MetaDataBox();
 $box->addItem($hits);
-echo $box->getPackage();
+
+echo $box->getPackage(new JsonPacker());
 ```
 
 ## Registry Examples
@@ -121,9 +123,11 @@ $myVar = new class implements MetaTrackableInterface {
 
 $meta = new MetaRegistry();
 
-$box = new MetaDataBox(new JsonPacker());
+$box = new MetaDataBox();
 $hits = new Hits('counters');
 $box->addItem($hits);
+
+$packer = new JsonPacker();
 
 $meta->register($myVar, $box);
 $meta->get($myVar)->getItemByName('counters')->hit('called');
@@ -131,14 +135,14 @@ $meta->get($myVar)->getItemByName('counters')->hit('called');
 // Modifying original object does not affect meta association.
 $myVar->value = 'testModified';
 
-var_dump(['$myVar' => $meta->get($myVar)->getPackage()]);
+var_dump(['$myVar' => $meta->get($myVar)->getPackage($packer)]);
 
 // Objects can be registered and accessed by name.
 $name = 'TrackMe';
 $meta->register($myVar, $box, $name);
 $meta->getByName($name)->getItemByName('counters')->hit('called');
 
-var_dump(['named registration' => $meta->getByName($name)->getPackage()]);
+var_dump(['named registration' => $meta->getByName($name)->getPackage($packer)]);
 ```
 
 ### Using the Magical Features of the Registry
@@ -164,9 +168,11 @@ $myVar = new class implements MetaTrackableInterface {
 
 $meta = new MetaRegistry();
 
-$box = new MetaDataBox(new JsonPacker());
+$box = new MetaDataBox();
 $hits = new Hits('counters');
 $box->addItem($hits);
+
+$packer = new JsonPacker();
 
 $name = 'TrackMe';
 $meta->register($myVar, $box, $name);
@@ -174,20 +180,20 @@ $meta->register($myVar, $box, $name);
 // For convenience, objects registered by name can use ArrayAccess via registry.
 $meta[$name]->getItemByName('counters')->hit('called');
 
-var_dump(['named registration (ArrayAccess)' => $meta[$name]->getPackage()]);
+var_dump(['named registration (ArrayAccess)' => $meta[$name]->getPackage($packer)]);
 
 // The box also supports array access, so we can do this.
 $meta[$name]['counters']->hit('called');
 $meta[$name]['counters']->hit('called');
 
-var_dump(['counters (ArrayAccess)' => $meta[$name]->getPackage()]);
+var_dump(['counters (ArrayAccess)' => $meta[$name]->getPackage($packer)]);
 
 // We can also call them as functions.
 $meta[$name]['counters']('called');
 $meta[$name]['counters']('called');
 $meta[$name]['counters']('called');
 
-var_dump(['counters as ActionItemInterface (ArrayAccess)' => $meta[$name]->getPackage()]);
+var_dump(['counters as ActionItemInterface (ArrayAccess)' => $meta[$name]->getPackage($packer)]);
 
 // Like array access, object access is also available by calling the function on a member.
 ($meta->TrackMe->counters)('ObjectAccessInvoked');
@@ -195,6 +201,6 @@ var_dump(['counters as ActionItemInterface (ArrayAccess)' => $meta[$name]->getPa
 // The above example is awkward, so method call is also supported.
 $meta->TrackMe->counters('ObjectAccessInvoked');
 
-var_dump(['counters as ObjectAccess' => $meta[$name]->getPackage()]);
+var_dump(['counters as ObjectAccess' => $meta[$name]->getPackage($packer)]);
 ```
 

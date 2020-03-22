@@ -12,7 +12,7 @@ $ composer require implements7/metadata
 
 ## Usage
 
-The following example demonstrates creating a meta item, adding it to a box, and getting the contents as JSON output. 
+The following example demonstrates creating meta items, adding them to a box, and getting the contents as JSON output. 
 
 ```php
 <?php declare(strict_types=1);
@@ -22,6 +22,7 @@ use MetaData\MetaItemInterface;
 use MetaData\MetaValueInterface;
 use MetaData\Packers\JsonPacker;
 use MetaData\Values\ArrayMetaValue;
+use MetaData\Values\StringMetaValue;
 
 require_once 'vendor/autoload.php';
 
@@ -43,15 +44,30 @@ $userBio = new class implements MetaItemInterface {
     }
 };
 
-// The format of the "packed" data.
-$jsonPacker = new JsonPacker();
-
 // Adding data.
-$box = new MetaDataBox($jsonPacker);
+$box = new MetaDataBox();
 $box->addItem($userBio);
 
+// Another class to track additional data.
+$location = new class implements MetaItemInterface {
+    public function getName(): string
+    {
+        return 'Location';
+    }
+
+    public function getValue(): MetaValueInterface
+    {
+        return new StringMetaValue('Las Vegas');
+    }
+};
+
+$box->addItem($location);
+
+// The format of the "packed" data.
+$packer = new JsonPacker();
+
 // Get the data.
-$contents = $box->getPackage();
+$contents = $box->getPackage($packer);
 
 echo $contents;
 ```
