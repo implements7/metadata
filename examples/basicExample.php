@@ -25,10 +25,6 @@ $userBio = new class implements MetaItemInterface {
             'Tags' => ['PHP', 'Go']
         ]);
     }
-
-    public function __invoke(string ...$parameters): void
-    {
-    }
 };
 
 // The format of the "packed" data.
@@ -48,10 +44,6 @@ $location = new class implements MetaItemInterface {
     public function getValue(): MetaValueInterface
     {
         return new StringMetaValue('Las Vegas');
-    }
-
-    public function __invoke(string ...$parameters): void
-    {
     }
 };
 
