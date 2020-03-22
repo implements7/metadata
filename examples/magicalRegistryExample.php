@@ -32,7 +32,7 @@ $meta[$name]['counters']->hit('called');
 
 var_dump(['counters (ArrayAccess)' => $meta[$name]->getPackage()]);
 
-// If the added items support ActionItemInterface, then we can call them as functions.
+// We can also call them as functions.
 $meta[$name]['counters']('called');
 $meta[$name]['counters']('called');
 $meta[$name]['counters']('called');
@@ -41,6 +41,7 @@ var_dump(['counters as ActionItemInterface (ArrayAccess)' => $meta[$name]->getPa
 
 // Like array access, object access is also available by calling the function on a member.
 ($meta->TrackMe->counters)('ObjectAccessInvoked');
+
 // The above example is awkward, so method call is also supported.
 $meta->TrackMe->counters('ObjectAccessInvoked');
 
