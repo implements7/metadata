@@ -1,5 +1,4 @@
-
-declare(strict_types=1);
+<?php declare(strict_types=1);
 
 use MetaData\Items\Hits;
 use MetaData\MetaDataBox;
