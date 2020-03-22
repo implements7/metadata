@@ -14,9 +14,11 @@ $myVar = new class implements MetaTrackableInterface {
 
 $meta = new MetaRegistry();
 
-$box = new MetaDataBox(new JsonPacker());
+$box = new MetaDataBox();
 $hits = new Hits('counters');
 $box->addItem($hits);
+
+$packer = new JsonPacker();
 
 $meta->register($myVar, $box);
 $meta->get($myVar)->getItemByName('counters')->hit('called');
@@ -24,11 +26,11 @@ $meta->get($myVar)->getItemByName('counters')->hit('called');
 // Modifying original object does not affect meta association.
 $myVar->value = 'testModified';
 
-var_dump(['$myVar' => $meta->get($myVar)->getPackage()]);
+var_dump(['$myVar' => $meta->get($myVar)->getPackage($packer)]);
 
 // Objects can be registered and accessed by name.
 $name = 'TrackMe';
 $meta->register($myVar, $box, $name);
 $meta->getByName($name)->getItemByName('counters')->hit('called');
 
-var_dump(['named registration' => $meta->getByName($name)->getPackage()]);
+var_dump(['named registration' => $meta->getByName($name)->getPackage($packer)]);

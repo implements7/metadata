@@ -3,6 +3,7 @@
 use MetaData\Filters\UniqueArray;
 use MetaData\Items\Tags;
 use MetaData\MetaDataBox;
+use MetaData\Packers\ArrayPacker;
 use MetaData\Packers\JsonPacker;
 
 require_once 'vendor/autoload.php';
@@ -27,7 +28,9 @@ $tags->addFilter($filter);
 $tags->filterValues();
 
 $jsonPacker = new JsonPacker();
-$box = new MetaDataBox($jsonPacker);
+$box = new MetaDataBox();
 $box->addItem($tags);
 
-echo $box->getPackage();
+var_dump(
+    $box->getPackage(new ArrayPacker())
+);

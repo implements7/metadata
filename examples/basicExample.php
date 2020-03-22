@@ -27,11 +27,8 @@ $userBio = new class implements MetaItemInterface {
     }
 };
 
-// The format of the "packed" data.
-$jsonPacker = new JsonPacker();
-
 // Adding data.
-$box = new MetaDataBox($jsonPacker);
+$box = new MetaDataBox();
 $box->addItem($userBio);
 
 // Another class to track additional data.
@@ -49,8 +46,11 @@ $location = new class implements MetaItemInterface {
 
 $box->addItem($location);
 
+// The format of the "packed" data.
+$packer = new JsonPacker();
+
 // Get the data.
-$contents = $box->getPackage();
+$contents = $box->getPackage($packer);
 
 echo $contents;
 

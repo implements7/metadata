@@ -32,8 +32,7 @@ for ($y = 0; $y < $years; $y++) {
     }
 }
 
-$jsonPacker = new JsonPacker();
-$box = new MetaDataBox($jsonPacker);
-
+$box = new MetaDataBox();
 $box->addItem($hits);
-echo $box->getPackage();
+
+echo $box->getPackage(new JsonPacker());
