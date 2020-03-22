@@ -80,7 +80,7 @@ class ArrayMetaValueTest extends TestCase
 
     public function testArrayOfNestedArrays()
     {
-        $values = [ [[]], [[]], [[]] ];
+        $values = [[[]], [[]], [[]]];
         $array = new ArrayMetaValue($values);
 
         $this->assertIsArray($array->get());

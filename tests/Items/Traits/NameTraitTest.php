@@ -2,9 +2,7 @@
 
 namespace Items\Traits;
 
-use MetaData\Items\Hits;
 use MetaData\Items\Traits\NameTrait;
-use MetaData\MetaItemInterface;
 use PHPUnit\Framework\TestCase;
 
 class NameTraitTest extends TestCase

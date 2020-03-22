@@ -4,9 +4,9 @@ namespace MetaData\Items;
 
 use MetaData\Items\Traits\ArrayValueTrait;
 use MetaData\Items\Traits\NameTrait;
-use MetaData\MetaItemInterface;
+use MetaData\MetaDataBoxItemInterface;
 
-class Hits implements MetaItemInterface
+class Hits implements MetaDataBoxItemInterface
 {
     use NameTrait;
     use ArrayValueTrait;
@@ -16,6 +16,11 @@ class Hits implements MetaItemInterface
         $this->setName($name);
     }
 
+    public function __invoke(string ...$parameters): void
+    {
+        $this->hit($parameters[0] ?? '');
+    }
+
     public function hit(string $hit): void
     {
         if (!isset($this->values[$hit])) {
@@ -23,10 +28,5 @@ class Hits implements MetaItemInterface
         }
 
         $this->values[$hit]++;
-    }
-
-    public function __invoke(string ...$parameters): void
-    {
-        $this->hit($parameters[0] ?? '');
     }
 }

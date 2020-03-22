@@ -1,7 +1,7 @@
 <?php declare(strict_types=1);
 
 use MetaData\MetaDataBox;
-use MetaData\MetaItemInterface;
+use MetaData\MetaDataBoxItemInterface;
 use MetaData\MetaPackerInterface;
 use MetaData\Packers\ArrayPacker;
 use MetaData\Values\ArrayMetaValue;
@@ -17,7 +17,7 @@ class MetaDataBoxTest extends TestCase
         $packer = $this->createMock(MetaPackerInterface::class);
         $box = new MetaDataBox($packer);
 
-        $item = $this->createMock(MetaItemInterface::class);
+        $item = $this->createMock(MetaDataBoxItemInterface::class);
         $this->assertNull($box->addItem($item));
     }
 
@@ -28,7 +28,7 @@ class MetaDataBoxTest extends TestCase
 
         $name = 'testName';
 
-        $item = $this->createMock(MetaItemInterface::class);
+        $item = $this->createMock(MetaDataBoxItemInterface::class);
         $item->method('getName')->willReturn($name);
 
         $box->addItem($item);
@@ -53,7 +53,7 @@ class MetaDataBoxTest extends TestCase
 
         $name = 'testName';
 
-        $item = $this->createMock(MetaItemInterface::class);
+        $item = $this->createMock(MetaDataBoxItemInterface::class);
         $item->method('getName')->willReturn($name);
 
         $box->addItem($item);
@@ -68,7 +68,7 @@ class MetaDataBoxTest extends TestCase
 
         $name = 'testName';
 
-        $item = $this->createMock(MetaItemInterface::class);
+        $item = $this->createMock(MetaDataBoxItemInterface::class);
         $item->method('getName')->willReturn($name);
 
         $box->addItem($item);
@@ -91,7 +91,7 @@ class MetaDataBoxTest extends TestCase
         $box = new MetaDataBox($packer);
 
         $name = 'testName';
-        $item = $this->createMock(MetaItemInterface::class);
+        $item = $this->createMock(MetaDataBoxItemInterface::class);
         $item->method('getName')->willReturn($name);
         $box->addItem($item);
 
@@ -125,7 +125,7 @@ class MetaDataBoxTest extends TestCase
         $packer = new ArrayPacker();
         $box = new MetaDataBox($packer);
 
-        $item = $this->createMock(MetaItemInterface::class);
+        $item = $this->createMock(MetaDataBoxItemInterface::class);
         $item->method('getName')->willReturn($name);
         $string = new StringMetaValue($value);
         $item->method('getValue')->willReturn($string);
@@ -145,7 +145,7 @@ class MetaDataBoxTest extends TestCase
         $packer = new ArrayPacker();
         $box = new MetaDataBox($packer);
 
-        $item = $this->createMock(MetaItemInterface::class);
+        $item = $this->createMock(MetaDataBoxItemInterface::class);
         $item->method('getName')->willReturn($name);
         $array = new ArrayMetaValue($values);
         $item->method('getValue')->willReturn($array);
@@ -168,7 +168,7 @@ class MetaDataBoxTest extends TestCase
         $box = new MetaDataBox($packer);
 
         foreach ($data as $name => $values) {
-            $item = $this->createMock(MetaItemInterface::class);
+            $item = $this->createMock(MetaDataBoxItemInterface::class);
             $item->method('getName')->willReturn($name);
             $array = new ArrayMetaValue($values);
             $item->method('getValue')->willReturn($array);
@@ -187,7 +187,7 @@ class MetaDataBoxTest extends TestCase
         $packer = new ArrayPacker();
         $box = new MetaDataBox($packer);
 
-        $item = $this->createMock(MetaItemInterface::class);
+        $item = $this->createMock(MetaDataBoxItemInterface::class);
         $item->method('getName')->willReturn($name);
         $array = new ArrayMetaValue($values);
         $item->method('getValue')->willReturn($array);

@@ -26,15 +26,6 @@ class MetaDataBox implements MetaDataInterface, MetaDataMagicalInterface, ArrayA
         $this->setOffsets($this->items);
     }
 
-    public function getItemByName(string $name): MetaItemInterface
-    {
-        if (!isset($this->items[$name])) {
-            throw new RuntimeException("Item not found");
-        }
-
-        return $this->items[$name];
-    }
-
     public function getPackage()
     {
         foreach ($this->items as $item) {
@@ -44,9 +35,18 @@ class MetaDataBox implements MetaDataInterface, MetaDataMagicalInterface, ArrayA
         return $this->packer->getContents();
     }
 
-    public function __get(string $name): MetaItemInterface
+    public function __get(string $name): MetaDataBoxItemInterface
     {
         return $this->getItemByName($name);
+    }
+
+    public function getItemByName(string $name): MetaDataBoxItemInterface
+    {
+        if (!isset($this->items[$name])) {
+            throw new RuntimeException("Item not found");
+        }
+
+        return $this->items[$name];
     }
 
     public function __call(string $name, array $arguments): void

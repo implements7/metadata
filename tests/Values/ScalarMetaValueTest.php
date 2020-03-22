@@ -4,6 +4,7 @@ namespace MetaData\Values;
 
 use MetaData\MetaValueInterface;
 use PHPUnit\Framework\TestCase;
+use stdClass;
 
 class ScalarMetaValueTest extends TestCase
 {
@@ -18,7 +19,7 @@ class ScalarMetaValueTest extends TestCase
 
     public function testUnsupportedTypes()
     {
-        $types = [[], new \stdClass()];
+        $types = [[], new stdClass()];
         foreach ($types as $type) {
             $this->expectException(MetaValueTypeException::class);
             $value = $this->getMockForAbstractClass(ScalarMetaValue::class, [$type]);

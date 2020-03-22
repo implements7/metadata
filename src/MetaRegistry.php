@@ -18,20 +18,31 @@ class MetaRegistry implements ArrayAccess
         $address = $this->getAddress($trackable);
         $this->registers[$address] = $data;
 
-        if (isset($name))
-        {
+        if (isset($name)) {
             $this->applyNameToRegistration($address, $name);
         }
     }
 
-    public function getByName(string $name): MetaDataInterface
+    private function getAddress(MetaTrackableInterface $trackable): string
     {
-        if (!$this->offsetExists($name))
-        {
-            throw new RuntimeException("Name not registered");
+        return spl_object_hash($trackable);
+    }
+
+    private function applyNameToRegistration(string $address, string $name): void
+    {
+        $this->addressNames[$name] = $this->getByAddress($address);
+
+        // For array access.
+        $this->setOffsets($this->addressNames);
+    }
+
+    private function getByAddress(string $address): MetaDataInterface
+    {
+        if (!isset($this->registers[$address])) {
+            throw new RuntimeException('Object not registered');
         }
 
-        return $this[$name];
+        return $this->registers[$address];
     }
 
     public function get(MetaTrackableInterface $trackable): MetaDataInterface
@@ -46,25 +57,12 @@ class MetaRegistry implements ArrayAccess
         return $this->getByName($name);
     }
 
-    private function getByAddress(string $address): MetaDataInterface
+    public function getByName(string $name): MetaDataInterface
     {
-        if (!isset($this->registers[$address])) {
-            throw new RuntimeException('Object not registered');
+        if (!$this->offsetExists($name)) {
+            throw new RuntimeException("Name not registered");
         }
 
-        return $this->registers[$address];
-    }
-
-    private function applyNameToRegistration(string $address, string $name): void
-    {
-        $this->addressNames[$name] = $this->getByAddress($address);
-
-        // For array access.
-        $this->setOffsets($this->addressNames);
-    }
-
-    private function getAddress(MetaTrackableInterface $trackable): string
-    {
-        return spl_object_hash($trackable);
+        return $this[$name];
     }
 }
